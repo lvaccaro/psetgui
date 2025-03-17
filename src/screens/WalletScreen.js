@@ -101,7 +101,7 @@ function WalletScreen({navigation}) {
   };
 
   const onReceive = async () => {
-    const {description, qr_code_text, is_blinded} = await GetNewAddress();
+    const description = await GetNewAddress();
     navigation.navigate('Receive', {address: description});
   };
 

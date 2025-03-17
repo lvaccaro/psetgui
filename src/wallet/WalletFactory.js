@@ -202,10 +202,9 @@ const GetTransactions = async () => {
       balance: balance,
       fee: Number(tx.fee()),
       height: tx.height(),
-      date: tx.timestamp(),
       type: tx.type(),
-      txid: tx.txid(),
-      date: new Date(tx.timestamp() * 1000),
+      txid: tx.txid().toString(),
+      timestamp: tx.timestamp(),
       tx: tx.tx().toString(),
     });
   });
@@ -338,17 +337,12 @@ const GetWolletInfo = async () => {
   const signer = await getSignerInstance();
 
   const descriptor = await signerInstance.wpkhSlip77Descriptor();
-  const descriptorString = await descriptor.asString();
+  const descriptorString = await descriptor.toString();
 
-  const bip = await new Bip();
-  const bip49 = await bip.newBip49();
-  const bip84 = await bip.newBip84();
-  const bip87 = await bip.newBip87();
-  const bip49Xpub = await signer.keyoriginXpub(bip);
+  const bip49Xpub = await signer.keyoriginXpub(Bip.newBip49());
   console.log(bip49Xpub);
-
-  const bip84Xpub = await signer.keyoriginXpub(bip84);
-  const bip87Xpub = await signer.keyoriginXpub(bip87);
+  const bip84Xpub = await signer.keyoriginXpub(Bip.newBip84());
+  const bip87Xpub = await signer.keyoriginXpub(Bip.newBip87());
   return {descriptorString, bip49Xpub, bip84Xpub, bip87Xpub};
 };
 
